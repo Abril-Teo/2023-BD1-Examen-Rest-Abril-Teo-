@@ -1,0 +1,22 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+asgiref = "==3.7.2"
+cffi = "==1.16.0"
+cryptography = "==41.0.5"
+django = "==4.2.6"
+djangorestframework = "==3.14.0"
+pycparser = "==2.21"
+pymysql = "==1.1.0"
+pytz = "==2023.3.post1"
+sqlparse = "==0.4.4"
+typing-extensions = "==4.8.0"
+mysql-client = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.10"
