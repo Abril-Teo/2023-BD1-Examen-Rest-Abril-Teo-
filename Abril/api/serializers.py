@@ -22,6 +22,7 @@ class CategorieSerializer (SerializadorPadre):
       fields = '__all__'
 
 class ProductSerializer (SerializadorPadre):
+   #categoryid = CategorieSerializer(many=False, required=False)
    class Meta:
       model = Products
       fields = '__all__'
