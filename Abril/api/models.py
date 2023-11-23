@@ -90,17 +90,29 @@ class Employees(models.Model):
     photopath = models.CharField(db_column='PhotoPath', max_length=255, blank=True, null=True)  # Field name made lowercase.
     salary = models.FloatField(db_column='Salary', blank=True, null=True)  # Field name made lowercase.
 
+    def nomCompleto(self):
+        return self.firstname + ' ' + self.lastname
+    def getId(self):
+        return self.employeeid
+    def getHireDate(self):
+        return self.hiredate
+
     class Meta:
         managed = False
         db_table = 'Employees'
 
+    
+
 
 class Orderdetails(models.Model):
-    orderid = models.OneToOneField('Orders', on_delete=models.CASCADE, db_column='OrderID', primary_key=True)  # Field name made lowercase. The composite primary key (OrderID, ProductID) found, that is not supported. The first column is selected.
+    orderid = models.ForeignKey('Orders', on_delete=models.CASCADE, db_column='OrderID', primary_key=True)  # Field name made lowercase. The composite primary key (OrderID, ProductID) found, that is not supported. The first column is selected.
     productid = models.ForeignKey('Products', on_delete=models.CASCADE, db_column='ProductID')  # Field name made lowercase.
     unitprice = models.DecimalField(db_column='UnitPrice', max_digits=10, decimal_places=4)  # Field name made lowercase.
     quantity = models.SmallIntegerField(db_column='Quantity')  # Field name made lowercase.
     discount = models.FloatField(db_column='Discount')  # Field name made lowercase.
+
+    def subTotal(self):
+        return (self.quantity * self.unitprice)
 
     class Meta:
         managed = False
@@ -192,3 +204,4 @@ class Territories(models.Model):
     class Meta:
         managed = False
         db_table = 'Territories'
+

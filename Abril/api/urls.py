@@ -26,5 +26,6 @@ urlpatterns = [
     path("filtro1/", filtro1, name="filtro1"),
     path("filtro2/", filtro2, name="filtro2"),
     path("filtro3/", filtro3, name="filtro3"),
-    path("filtro4/", filtro4, name="filtro4"),
+    path("filtro4/", punto2, name="punto2"),
+    path("punto1", punto1)
 ]

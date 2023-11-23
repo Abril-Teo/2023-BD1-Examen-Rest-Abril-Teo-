@@ -51,3 +51,10 @@ class Filtro4Serializer(serializers.Serializer):
    birthdate = serializers.DateTimeField()
    country = serializers.CharField()
    newCountry = serializers.CharField()
+
+
+class Punto1Serializer(serializers.Serializer):
+   EmployeeID = serializers.CharField()
+   NombreCompleto_del_empleado = serializers.CharField()
+   Ganancias_Totales = serializers.CharField()
+   Hire_Date = serializers.CharField()

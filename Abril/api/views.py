@@ -292,7 +292,7 @@ def filtro3(request):
     employeeSerializers = EmployeeSerializer(employees, many=True)
     return Response(employeeSerializers.data, status=status.HTTP_200_OK)
 
-
+'''
 @api_view(["GET", 'UPDATE'])
 def filtro4(request):
     letra = request.query_params.get("letter")
@@ -315,4 +315,64 @@ def filtro4(request):
             e.save()
 
     serializados = Filtro4Serializer(resultados, many=True)
+    return Response(serializados.data)
+'''
+
+@api_view(["GET"])
+def punto2(request):
+    letra = request.query_params.get("letter")
+    year = request.query_params.get("year")
+
+    empleadosFiltrados = Employees.objects.filter(firstname__icontains = letra, birthdate__year__gte = year)
+    resultados = []
+    for e in empleadosFiltrados:
+        resultado = {
+            "id" : e.employeeid,
+            "nombre" : e.firstname,
+            "apellido" : e.lastname,
+            "birthdate" : e.birthdate,
+            "country" : e.country,
+            "newCountry" : request.query_params.get("newCountry"),
+        }
+        resultados.append(resultado)
+        e.country = request.query_params.get("newCountry")
+        e.save()
+
+    serializados = Filtro4Serializer(resultados, many=True)
+    return Response(serializados.data)
+
+
+@api_view(['GET'])
+def punto1(request):
+    categoria = request.query_params.get("categoryid")
+    ventas = request.query_params.get("ventasmin")
+
+    detalle_ordenes = Orderdetails.objects.filter(productid__categoryid = categoria) 
+    resultados = []
+    for e in detalle_ordenes:
+        precioTotal = 0
+        precioTotal += e.subTotal()
+        ordenes = e.orderid
+        #print("aaaaaaa" , ordenes.employeeid.nomCompleto())
+
+
+        empleado = ordenes.employeeid
+        print(empleado)
+        resultado = {
+            "EmployeeID" : empleado.getId(),
+            "NombreCompleto_del_empleado" : empleado.nomCompleto(),
+            "Ganancias_Totales" : precioTotal,
+            "Hire_Date" : empleado.getHireDate,
+        }
+        if precioTotal >= int(ventas):
+                    resultados.append(resultado)
+    
+    '''
+    empleadoActual = O
+    for i in resultados:
+        for y in resultados:
+            if y.EmployeedID == empleadoActual:
+                Ganancias_Totales += Ganancias_Totales
+    '''
+    serializados = Punto1Serializer(resultados, many=True)
     return Response(serializados.data)
