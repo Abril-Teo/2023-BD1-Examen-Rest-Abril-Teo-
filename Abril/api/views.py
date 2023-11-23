@@ -277,3 +277,42 @@ def filtro1(request):
     employees = Employees.objects.filter(birthday__lt=datetime(1948, 12, 8, 00, 00, 00, 00))
     employeeSerializers = EmployeeSerializer(employees, many=True)
     return Response(employeeSerializers.data, status=status.HTTP_200_OK)
+
+    #employees cuyo country contenga una vocal y cuyo salary sea mayor a 3000 y cuyo birthday sea antes del 1 de enero de 1990 teniendo en cuenta que la estructura que usa para el birthday es un datetime asi: "birthdate": "1937-09-19T00:00:00Z"
+from datetime import datetime
+from django.db.models import Q
+
+@api_view(["GET", 'UPDATE'])
+def filtro3(request):
+
+    employees = Employees.objects.filter(Q(country__icontains='a') | Q(country__icontains='e') | Q(country__icontains='i') | Q(country__icontains='o') | Q(country__icontains='u'), salary__gt=2800, birthdate__lt=datetime(1990, 1, 1))
+
+    employees.update(salary=5555)
+
+    employeeSerializers = EmployeeSerializer(employees, many=True)
+    return Response(employeeSerializers.data, status=status.HTTP_200_OK)
+
+
+@api_view(["GET", 'UPDATE'])
+def filtro4(request):
+    letra = request.query_params.get("letter")
+    year = request.query_params.get("year")
+
+    empleadosFiltrados = Employees.objects.filter(firstname__icontains = letra)
+    resultados = []
+    for e in empleadosFiltrados:
+        resultado = {
+            "id" : e.employeeid,
+            "nombre" : e.firstname,
+            "apellido" : e.lastname,
+            "birthdate" : e.birthdate,
+            "country" : e.country,
+            "newCountry" : request.query_params.get("newCountry"),
+        }
+        if e.birthdate.year >= int(year):
+            resultados.append(resultado)
+            e.country = request.query_params.get("newCountry")
+            e.save()
+
+    serializados = Filtro4Serializer(resultados, many=True)
+    return Response(serializados.data)

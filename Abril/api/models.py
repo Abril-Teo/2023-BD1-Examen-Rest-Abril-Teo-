@@ -110,12 +110,12 @@ class Orderdetails(models.Model):
 
 class Orders(models.Model):
     orderid = models.AutoField(db_column='OrderID', primary_key=True)  # Field name made lowercase.
-    customerid = models.ForeignKey(Customers, models.DO_NOTHING, db_column='CustomerID', blank=True, null=True)  # Field name made lowercase.
-    employeeid = models.ForeignKey(Employees, models.DO_NOTHING, db_column='EmployeeID', blank=True, null=True)  # Field name made lowercase.
+    CustomerID = models.ForeignKey(Customers, on_delete=models.CASCADE, db_column='CustomerID', blank=True, null=True)  # Field name made lowercase. ACA APLIQUE EL CASCADE
+    employeeid = models.ForeignKey(Employees, on_delete=models.CASCADE, db_column='EmployeeID', blank=True, null=True)  # Field name made lowercase.
     orderdate = models.DateTimeField(db_column='OrderDate', blank=True, null=True)  # Field name made lowercase.
     requireddate = models.DateTimeField(db_column='RequiredDate', blank=True, null=True)  # Field name made lowercase.
     shippeddate = models.DateTimeField(db_column='ShippedDate', blank=True, null=True)  # Field name made lowercase.
-    shipvia = models.ForeignKey('Shippers', models.DO_NOTHING, db_column='ShipVia', blank=True, null=True)  # Field name made lowercase.
+    shipvia = models.ForeignKey('Shippers', on_delete=models.CASCADE, db_column='ShipVia', blank=True, null=True)  # Field name made lowercase.
     freight = models.DecimalField(db_column='Freight', max_digits=10, decimal_places=4, blank=True, null=True)  # Field name made lowercase.
     shipname = models.CharField(db_column='ShipName', max_length=40, blank=True, null=True)  # Field name made lowercase.
     shipaddress = models.CharField(db_column='ShipAddress', max_length=60, blank=True, null=True)  # Field name made lowercase.
